@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Primer Design Pipeline - Analysis Report</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #0ea5e9;
+            --slate-50: #f8fafc;
+            --slate-100: #f1f5f9;
+            --slate-200: #e2e8f0;
+            --slate-300: #cbd5e1;
+            --slate-400: #94a3b8;
+            --slate-500: #64748b;
+            --slate-600: #475569;
+            --slate-700: #334155;
+            --slate-800: #1e293b;
+            --slate-900: #0f172a;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--slate-50);
+            color: var(--slate-800);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 400px;
+            height: 100%;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo-text h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .logo-text p {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        .header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+            max-width: 600px;
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: rgba(255,255,255,0.15);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Section Styling */
+        .section {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 4px 12px rgba(0,0,0,0.03);
+            border: 1px solid var(--slate-100);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--slate-100);
+        }
+
+        .section-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--slate-800);
+        }
+
+        /* Best Primer Card */
+        .best-primer-card {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 2px solid #f59e0b;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .best-primer-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #f59e0b;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .primer-seqs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .seq-box {
+            padding: 1rem;
+            border-radius: 10px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9rem;
+        }
+
+        .seq-fwd {
+            background: #d1fae5;
+            border: 1px solid #10b981;
+        }
+
+        .seq-rev {
+            background: #ede9fe;
+            border: 1px solid #8b5cf6;
+        }
+
+        .seq-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .seq-fwd .seq-label { color: #059669; }
+        .seq-rev .seq-label { color: #7c3aed; }
+
+        .seq-value {
+            word-break: break-all;
+            line-height: 1.5;
+        }
+
+        .seq-fwd .seq-value { color: #065f46; }
+        .seq-rev .seq-value { color: #4c1d95; }
+
+        .primer-metrics {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .metric {
+            text-align: center;
+            padding: 0.75rem;
+            background: rgba(255,255,255,0.5);
+            border-radius: 10px;
+        }
+
+        .metric-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--slate-800);
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            color: var(--slate-500);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Top Primers Table */
+        .primers-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .primers-table thead {
+            background: var(--slate-50);
+        }
+
+        .primers-table th {
+            padding: 1rem;
+            text-align: left;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--slate-500);
+            border-bottom: 2px solid var(--slate-200);
+        }
+
+        .primers-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--slate-100);
+            font-size: 0.9rem;
+        }
+
+        .primers-table tbody tr:hover {
+            background: var(--slate-50);
+        }
+
+        .rank-badge {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+            font-size: 0.85rem;
+        }
+
+        .rank-1 { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .rank-2 { background: linear-gradient(135deg, #94a3b8, #64748b); }
+        .rank-3 { background: linear-gradient(135deg, #b45309, #92400e); }
+        .rank-4, .rank-5 { background: linear-gradient(135deg, #6366f1, #4f46e5); }
+
+        .primer-seq {
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.8rem;
+            background: var(--slate-50);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        .score-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .score-excellent { background: #d1fae5; color: #065f46; }
+        .score-good { background: #dbeafe; color: #1e40af; }
+        .score-fair { background: #fef3c7; color: #92400e; }
+
+        /* Graphs Grid */
+        .graphs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .graphs-grid {
+                grid-template-columns: 1fr;
+            }
+            .primer-seqs {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .graph-card {
+            border: 1px solid var(--slate-200);
+            border-radius: 12px;
+            overflow: hidden;
+            background: white;
+        }
+
+        .graph-header {
+            padding: 1rem 1.25rem;
+            background: var(--slate-50);
+            border-bottom: 1px solid var(--slate-100);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .graph-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .graph-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--slate-800);
+        }
+
+        .graph-subtitle {
+            font-size: 0.75rem;
+            color: var(--slate-500);
+        }
+
+        .graph-body {
+            padding: 1.25rem;
+            min-height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .graph-placeholder {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--slate-50) 0%, var(--slate-100) 100%);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--slate-400);
+        }
+
+        .graph-placeholder-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .graph-description {
+            padding: 1rem 1.25rem;
+            background: var(--slate-50);
+            border-top: 1px solid var(--slate-100);
+        }
+
+        .graph-description p {
+            font-size: 0.85rem;
+            color: var(--slate-600);
+            line-height: 1.5;
+        }
+
+        /* Chart Visuals */
+        .chart-bar {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 4px;
+            height: 150px;
+            padding: 1rem;
+            width: 100%;
+        }
+
+        .bar {
+            width: 20px;
+            background: linear-gradient(to top, var(--primary), var(--secondary));
+            border-radius: 4px 4px 0 0;
+            transition: height 0.3s ease;
+        }
+
+        .scatter-chart {
+            width: 100%;
+            height: 180px;
+            position: relative;
+        }
+
+        .scatter-chart svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .kde-chart {
+            width: 100%;
+            height: 180px;
+        }
+
+        .heatmap-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 4px;
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .heatmap-cell {
+            aspect-ratio: 1;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            font-weight: 600;
+        }
+
+        /* Algorithm Section */
+        .algo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .algo-card {
+            padding: 1.5rem;
+            background: var(--slate-50);
+            border-radius: 12px;
+            border: 1px solid var(--slate-100);
+        }
+
+        .algo-card h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--slate-800);
+            margin-bottom: 1rem;
+        }
+
+        .formula {
+            background: var(--slate-800);
+            color: #a5f3fc;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+        }
+
+        .constraints-table {
+            width: 100%;
+            font-size: 0.85rem;
+        }
+
+        .constraints-table th,
+        .constraints-table td {
+            padding: 0.5rem;
+            text-align: left;
+            border-bottom: 1px solid var(--slate-100);
+        }
+
+        .constraints-table th {
+            color: var(--slate-500);
+            font-weight: 500;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--slate-500);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--slate-200);
+            margin-top: 2rem;
+        }
+
+        .footer-badges {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.35rem 0.75rem;
+            background: var(--slate-100);
+            border-radius: 50px;
+            font-size: 0.75rem;
+            color: var(--slate-600);
+        }
+
+        /* Print Styles */
+        @media print {
+            .header {
+                background: var(--primary) !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .section {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo-section">
+                <div class="logo-icon">🧬</div>
+                <div class="logo-text">
+                    <p>Bioinformatics Pipeline</p>
+                </div>
+            </div>
+            <h2>Primer Design Analysis Report</h2>
+            <p>Comprehensive PCR primer pair analysis with quality metrics, thermodynamic calculations, and statistical visualizations.</p>
+            
+            <div class="header-stats">
+                <div class="stat-item">
+                    <div class="stat-value">500</div>
+                    <div class="stat-label">Primer Candidates</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">23</div>
+                    <div class="stat-label">Quality Metrics</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">4</div>
+                    <div class="stat-label">Visualizations</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">v2.0</div>
+                    <div class="stat-label">Pipeline Version</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        
+        <!-- Best Primer Section -->
+        <section class="best-primer-card">
+            <div class="best-primer-badge">
+                <span>🏆</span>
+                <span>Recommended Primer Pair</span>
+            </div>
+            
+            <div class="primer-seqs">
+                <div class="seq-box seq-fwd">
+                    <div class="seq-label">Forward Primer (5' → 3')</div>
+                    <div class="seq-value">ATGCGATCGATGCGATCGAT</div>
+                </div>
+                <div class="seq-box seq-rev">
+                    <div class="seq-label">Reverse Primer (5' → 3')</div>
+                    <div class="seq-value">CGATCGATCGCGATCGTAG</div>
+                </div>
+            </div>
+
+            <div class="primer-metrics">
+                <div class="metric">
+                    <div class="metric-value">60.2/59.8°C</div>
+                    <div class="metric-label">Melting Temp</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">50.0/48.0%</div>
+                    <div class="metric-label">GC Content</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">200 bp</div>
+                    <div class="metric-label">Amplicon Size</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">0.156</div>
+                    <div class="metric-label">Penalty Score</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">0.4°C</div>
+                    <div class="metric-label">Tm Difference</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">2.3</div>
+                    <div class="metric-label">Cross 3' Stability</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Top 5 Primers Section -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon" style="background: #dbeafe;">
+                    <span>📋</span>
+                </div>
+                <h3 class="section-title">Top 5 Ranked Primer Pairs</h3>
+            </div>
+            
+            <table class="primers-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Forward (5'→3')</th>
+                        <th>Reverse (5'→3')</th>
+                        <th>Tm (°C)</th>
+                        <th>GC (%)</th>
+                        <th>Size</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><div class="rank-badge rank-1">1</div></td>
+                        <td><code class="primer-seq">ATGCGATCGATGCGATCGAT</code></td>
+                        <td><code class="primer-seq">CGATCGATCGCGATCGTAG</code></td>
+                        <td>60.2/59.8</td>
+                        <td>50.0/48.0</td>
+                        <td>200 bp</td>
+                        <td><span class="score-badge score-excellent">0.156</span></td>
+                    </tr>
+                    <tr>
+                        <td><div class="rank-badge rank-2">2</div></td>
+                        <td><code class="primer-seq">TCGATCGAATGCGATCGAT</code></td>
+                        <td><code class="primer-seq">ATCGATCGCGATCGATCGA</code></td>
+                        <td>59.5/60.1</td>
+                        <td>48.5/52.0</td>
+                        <td>180 bp</td>
+                        <td><span class="score-badge score-excellent">0.182</span></td>
+                    </tr>
+                    <tr>
+                        <td><div class="rank-badge rank-3">3</div></td>
+                        <td><code class="primer-seq">GATCGATCGCGATCGATCG</code></td>
+                        <td><code class="primer-seq">CGATCGATCGATCGAATGC</code></td>
+                        <td>58.8/61.2</td>
+                        <td>52.5/49.5</td>
+                        <td>220 bp</td>
+                        <td><span class="score-badge score-good">0.198</span></td>
+                    </tr>
+                    <tr>
+                        <td><div class="rank-badge rank-4">4</div></td>
+                        <td><code class="primer-seq">ATCGATCGATGCGATCGAT</code></td>
+                        <td><code class="primer-seq">ATCGATCGCGATCGAATCG</code></td>
+                        <td>60.5/59.2</td>
+                        <td>45.5/55.0</td>
+                        <td>250 bp</td>
+                        <td><span class="score-badge score-good">0.215</span></td>
+                    </tr>
+                    <tr>
+                        <td><div class="rank-badge rank-5">5</div></td>
+                        <td><code class="primer-seq">CGATCGAATGCGATCGATC</code></td>
+                        <td><code class="primer-seq">GATCGATCGCGATCGATCG</code></td>
+                        <td>61.0/58.5</td>
+                        <td>53.0/47.5</td>
+                        <td>300 bp</td>
+                        <td><span class="score-badge score-fair">0.228</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Visualizations Section -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon" style="background: #fef3c7;">
+                    <span>📊</span>
+                </div>
+                <h3 class="section-title">Statistical Visualizations</h3>
+            </div>
+            
+            <div class="graphs-grid">
+                <!-- Graph 1 -->
+                <div class="graph-card">
+                    <div class="graph-header">
+                        <div class="graph-icon" style="background: #dbeafe;">📈</div>
+                        <div>
+                            <div class="graph-title">Penalty Score Distribution</div>
+                            <div class="graph-subtitle">graph1_penalty.png</div>
+                        </div>
+                    </div>
+                    <div class="graph-body">
+                        <div class="chart-bar">
+                            <div class="bar" style="height: 85%;"></div>
+                            <div class="bar" style="height: 92%;"></div>
+                            <div class="bar" style="height: 100%;"></div>
+                            <div class="bar" style="height: 95%;"></div>
+                            <div class="bar" style="height: 78%;"></div>
+                            <div class="bar" style="height: 65%;"></div>
+                            <div class="bar" style="height: 55%;"></div>
+                            <div class="bar" style="height: 42%;"></div>
+                            <div class="bar" style="height: 35%;"></div>
+                            <div class="bar" style="height: 28%;"></div>
+                            <div class="bar" style="height: 22%;"></div>
+                            <div class="bar" style="height: 18%;"></div>
+                            <div class="bar" style="height: 15%;"></div>
+                            <div class="bar" style="height: 12%;"></div>
+                            <div class="bar" style="height: 10%;"></div>
+                        </div>
+                    </div>
+                    <div class="graph-description">
+                        <p>Histogram showing distribution of penalty scores across all primer candidates. Most high-quality candidates cluster near 0.15-0.25 penalty range.</p>
+                    </div>
+                </div>
+
+                <!-- Graph 2 -->
+                <div class="graph-card">
+                    <div class="graph-header">
+                        <div class="graph-icon" style="background: #d1fae5;">🎯</div>
+                        <div>
+                            <div class="graph-title">Forward vs Reverse Tm</div>
+                            <div class="graph-subtitle">graph2_tm_scatter.png</div>
+                        </div>
+                    </div>
+                    <div class="graph-body">
+                        <div class="scatter-chart">
+                            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet">
+                                <!-- Grid lines -->
+                                <line x1="20" y1="130" x2="190" y2="130" stroke="#e2e8f0" stroke-width="1"/>
+                                <line x1="20" y1="20" x2="20" y2="130" stroke="#e2e8f0" stroke-width="1"/>
+                                <!-- Diagonal ideal line -->
+                                <line x1="20" y1="130" x2="190" y2="20" stroke="#10b981" stroke-width="2" stroke-dasharray="5,5" opacity="0.5"/>
+                                <!-- Data points -->
+                                <circle cx="85" cy="95" r="5" fill="#6366f1" opacity="0.6"/>
+                                <circle cx="95" cy="88" r="5" fill="#6366f1" opacity="0.6"/>
+                                <circle cx="105" cy="78" r="5" fill="#6366f1" opacity="0.6"/>
+                                <circle cx="110" cy="72" r="5" fill="#6366f1" opacity="0.6"/>
+                                <circle cx="115" cy="68" r="5" fill="#6366f1" opacity="0.6"/>
+                                <circle cx="120" cy="75" r="5" fill="#6366f1" opacity="0.6"/>
+                                <circle cx="130" cy="60" r="5" fill="#10b981" opacity="0.8"/>
+                                <circle cx="135" cy="55" r="5" fill="#10b981" opacity="0.8"/>
+                                <circle cx="140" cy="50" r="5" fill="#10b981" opacity="0.8"/>
+                                <circle cx="145" cy="48" r="5" fill="#10b981" opacity="0.8"/>
+                                <circle cx="150" cy="52" r="5" fill="#10b981" opacity="0.8"/>
+                                <!-- Labels -->
+                                <text x="100" y="145" text-anchor="middle" font-size="8" fill="#64748b">Forward Tm (°C)</text>
+                                <text x="10" y="75" text-anchor="middle" font-size="8" fill="#64748b" transform="rotate(-90, 10, 75)">Reverse Tm (°C)</text>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="graph-description">
+                        <p>Scatter plot comparing melting temperatures. Green dots near diagonal indicate balanced primer pairs with similar Tm for both directions.</p>
+                    </div>
+                </div>
+
+                <!-- Graph 3 -->
+                <div class="graph-card">
+                    <div class="graph-header">
+                        <div class="graph-icon" style="background: #ede9fe;">🧬</div>
+                        <div>
+                            <div class="graph-title">GC Content Distribution</div>
+                            <div class="graph-subtitle">graph3_gc_dist.png</div>
+                        </div>
+                    </div>
+                    <div class="graph-body">
+                        <div class="kde-chart">
+                            <svg viewBox="0 0 200 150" preserveAspectRatio="xMidYMid meet">
+                                <!-- Ideal range box -->
+                                <rect x="65" y="20" width="70" height="110" fill="#dbeafe" opacity="0.3" rx="4"/>
+                                <text x="100" y="35" text-anchor="middle" font-size="7" fill="#3b82f6">40-65%</text>
+                                <!-- Red line (Forward GC) -->
+                                <path d="M 20 120 Q 40 110 55 90 T 85 55 T 115 60 T 145 80 T 180 100" fill="none" stroke="#ef4444" stroke-width="2.5"/>
+                                <!-- Green line (Reverse GC) -->
+                                <path d="M 20 125 Q 35 115 50 95 T 80 50 T 110 45 T 140 70 T 180 95" fill="none" stroke="#22c55e" stroke-width="2.5"/>
+                                <!-- Legend -->
+                                <circle cx="160" cy="138" r="4" fill="#ef4444"/>
+                                <text x="168" y="140" font-size="7" fill="#64748b">Fwd GC</text>
+                                <circle cx="160" cy="148" r="4" fill="#22c55e"/>
+                                <text x="168" y="150" font-size="7" fill="#64748b">Rev GC</text>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="graph-description">
+                        <p>KDE curves showing GC distribution. Red = Forward, Green = Reverse. Blue shaded area marks optimal 40-65% GC range for stable annealing.</p>
+                    </div>
+                </div>
+
+                <!-- Graph 4 -->
+                <div class="graph-card">
+                    <div class="graph-header">
+                        <div class="graph-icon" style="background: #fee2e2;">🔥</div>
+                        <div>
+                            <div class="graph-title">Feature Correlation Heatmap</div>
+                            <div class="graph-subtitle">graph4_heatmap.png</div>
+                        </div>
+                    </div>
+                    <div class="graph-body">
+                        <div class="heatmap-grid">
+                            <div class="heatmap-cell" style="background: rgba(239, 68, 68, 1); color: white;">1.00</div>
+                            <div class="heatmap-cell" style="background: rgba(239, 68, 68, 0.72);">0.72</div>
+                            <div class="heatmap-cell" style="background: rgba(239, 68, 68, 0.65);">0.65</div>
+                            <div class="heatmap-cell" style="background: rgba(59, 130, 246, 0.32);">-0.32</div>
+                            
+                            <div class="heatmap-cell" style="background: rgba(239, 68, 68, 0.72);">0.72</div>
+                            <div class="heatmap-cell" style="background: rgba(239, 68, 68, 1); color: white;">1.00</div>
+                            <div class="heatmap-cell" style="background: rgba(239, 68, 68, 0.58);">0.58</div>
+                            <div class="heatmap-cell" style="background: rgba(239, 68, 68, 0.28);">0.28</div>
+                            
+                            <div class="heatmap-cell" style="background: rgba(239, 68, 68, 0.65);">0.65</div>
+                            <div class="heatmap-cell" style="background: rgba(239, 68, 68, 0.58);">0.58</div>
+                            <div class="heatmap-cell" style="background: rgba(239, 68, 68, 1); color: white;">1.00</div>
+                            <div class="heatmap-cell" style="background: rgba(59, 130, 246, 0.15);">-0.15</div>
+                            
+                            <div class="heatmap-cell" style="background: rgba(59, 130, 246, 0.32);">-0.32</div>
+                            <div class="heatmap-cell" style="background: rgba(239, 68, 68, 0.28);">0.28</div>
+                            <div class="heatmap-cell" style="background: rgba(59, 130, 246, 0.15);">-0.15</div>
+                            <div class="heatmap-cell" style="background: rgba(59, 130, 246, 1); color: white;">1.00</div>
+                        </div>
+                    </div>
+                    <div class="graph-description">
+                        <p>Correlation matrix showing feature relationships. Red = positive correlation, Blue = negative. Strong fwd_tm/rev_tm correlation indicates balanced design.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Algorithm Section -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon" style="background: #d1fae5;">
+                    <span>⚙️</span>
+                </div>
+                <h3 class="section-title">Algorithm & Methodology</h3>
+            </div>
+            
+            <div class="algo-grid">
+                <div class="algo-card">
+                    <h4>Melting Temperature (Wallace Rule)</h4>
+                    <div class="formula">Tm = 2 × (A + T) + 4 × (G + C)</div>
+                    <p style="font-size: 0.85rem; color: var(--slate-600); margin-top: 0.75rem;">
+                        Simplified formula for primers under 25 bp. Assumes 50mM Na⁺ concentration.
+                    </p>
+                </div>
+
+                <div class="algo-card">
+                    <h4>Penalty Score Formula</h4>
+                    <div class="formula">
+                        penalty = (|fwd_tm - 60| × 0.05) + (|rev_tm - 60| × 0.05)<br>
+                        + (|fwd_gc - 50| × 0.03) + (|rev_gc - 50| × 0.03)<br>
+                        + ((10 - quality) × 0.1)
+                    </div>
+                    <p style="font-size: 0.85rem; color: var(--slate-600); margin-top: 0.75rem;">
+                        Lower penalty indicates better primer pair. Targets: Tm = 60°C, GC = 50%.
+                    </p>
+                </div>
+
+                <div class="algo-card">
+                    <h4>Design Constraints</h4>
+                    <table class="constraints-table">
+                        <tr>
+                            <th>Parameter</th>
+                            <th>Min</th>
+                            <th>Max</th>
+                            <th>Optimal</th>
+                        </tr>
+                        <tr>
+                            <td>Primer Length</td>
+                            <td>18 bp</td>
+                            <td>25 bp</td>
+                            <td>20 bp</td>
+                        </tr>
+                        <tr>
+                            <td>GC Content</td>
+                            <td>40%</td>
+                            <td>65%</td>
+                            <td>50%</td>
+                        </tr>
+                        <tr>
+                            <td>Melting Temp</td>
+                            <td>55°C</td>
+                            <td>65°C</td>
+                            <td>60°C</td>
+                        </tr>
+                        <tr>
+                            <td>Product Size</td>
+                            <td>150 bp</td>
+                            <td>400 bp</td>
+                            <td>200-300 bp</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="algo-card">
+                    <h4>Quality Scoring Features</h4>
+                    <ul style="font-size: 0.85rem; color: var(--slate-600); padding-left: 1.25rem;">
+                        <li style="margin-bottom: 0.5rem;"><strong>Homopolymer penalty:</strong> -4.0 for 5+ repeats</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>G/C clamp bonus:</strong> +0.5 at 3' end</li>
+                        <li style="margin-bottom: 0.5rem;"><strong>Poly-N penalty:</strong> -3.0 for ambiguous bases</li>
+                        <li><strong>Repeat penalty:</strong> -1.5 for dinucleotide repeats</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Output Files Section -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-icon" style="background: #fce7f3;">
+                    <span>📁</span>
+                </div>
+                <h3 class="section-title">Generated Output Files</h3>
+            </div>
+            
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem;">
+                <div style="padding: 1rem; background: var(--slate-50); border-radius: 10px; display: flex; align-items: center; gap: 1rem;">
+                    <div style="width: 40px; height: 40px; background: #dbeafe; border-radius: 8px; display: flex; align-items: center; justify-content: center;">📄</div>
+                    <div>
+                        <div style="font-weight: 600; color: var(--slate-800);">primer_candidates.csv</div>
+                        <div style="font-size: 0.8rem; color: var(--slate-500);">23 columns, 500 primer pairs</div>
+                    </div>
+                </div>
+                <div style="padding: 1rem; background: var(--slate-50); border-radius: 10px; display: flex; align-items: center; gap: 1rem;">
+                    <div style="width: 40px; height: 40px; background: #d1fae5; border-radius: 8px; display: flex; align-items: center; justify-content: center;">📋</div>
+                    <div>
+                        <div style="font-weight: 600; color: var(--slate-800);">top5_report.txt</div>
+                        <div style="font-size: 0.8rem; color: var(--slate-500);">Human-readable summary</div>
+                    </div>
+                </div>
+                <div style="padding: 1rem; background: var(--slate-50); border-radius: 10px; display: flex; align-items: center; gap: 1rem;">
+                    <div style="width: 40px; height: 40px; background: #fef3c7; border-radius: 8px; display: flex; align-items: center; justify-content: center;">📊</div>
+                    <div>
+                        <div style="font-weight: 600; color: var(--slate-800);">graph1_penalty.png</div>
+                        <div style="font-size: 0.8rem; color: var(--slate-500);">Penalty distribution</div>
+                    </div>
+                </div>
+                <div style="padding: 1rem; background: var(--slate-50); border-radius: 10px; display: flex; align-items: center; gap: 1rem;">
+                    <div style="width: 40px; height: 40px; background: #d1fae5; border-radius: 8px; display: flex; align-items: center; justify-content: center;">🎯</div>
+                    <div>
+                        <div style="font-weight: 600; color: var(--slate-800);">graph2_tm_scatter.png</div>
+                        <div style="font-size: 0.8rem; color: var(--slate-500);">Tm correlation plot</div>
+                    </div>
+                </div>
+                <div style="padding: 1rem; background: var(--slate-50); border-radius: 10px; display: flex; align-items: center; gap: 1rem;">
+                    <div style="width: 40px; height: 40px; background: #ede9fe; border-radius: 8px; display: flex; align-items: center; justify-content: center;">🧬</div>
+                    <div>
+                        <div style="font-weight: 600; color: var(--slate-800);">graph3_gc_dist.png</div>
+                        <div style="font-size: 0.8rem; color: var(--slate-500);">GC content KDE</div>
+                    </div>
+                </div>
+                <div style="padding: 1rem; background: var(--slate-50); border-radius: 10px; display: flex; align-items: center; gap: 1rem;">
+                    <div style="width: 40px; height: 40px; background: #fee2e2; border-radius: 8px; display: flex; align-items: center; justify-content: center;">🔥</div>
+                    <div>
+                        <div style="font-weight: 600; color: var(--slate-800);">graph4_heatmap.png</div>
+                        <div style="font-size: 0.8rem; color: var(--slate-500);">Feature correlations</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-badges">
+            <span class="footer-badge">🧬 BioPython 1.80+</span>
+            <span class="footer-badge">⚡ primer3-py 2.0+</span>
+            <span class="footer-badge">📊 Pandas & NumPy</span>
+            <span class="footer-badge">🎨 Seaborn & Matplotlib</span>
+        </div>
+        <p>Automated Primer Design Pipeline • Generated Output</p>
+        <p style="margin-top: 0.5rem; opacity: 0.7;">For research and educational purposes</p>
+    </footer>
+</body>
+</html>
