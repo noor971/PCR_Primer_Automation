@@ -1,9 +1,3 @@
-#!/usr/bin/env python3
-"""
-Complete Primer Design Pipeline
-Automatically designs primer pairs for PCR from DNA sequence
-"""
-
 import os
 import sys
 import pandas as pd
@@ -39,29 +33,30 @@ class CompletePrimerPipeline:
         """Load sequence from dna.txt file"""
         print("🔍 BACKGROUND SEARCH: Scanning for dna.txt...")
 
-        fasta_file = INPUT_DIR / "dna.txt"
+        fasta_file_path = INPUT_DIR / "dna.txt" # Create a Path object
+        fasta_file_str = str(fasta_file_path) # Convert to string for os.path.exists and file operations
 
-        if not fasta_file.exists():
+        if not os.path.exists(fasta_file_str): # Use os.path.exists for robust check
             print(f"❌ dna.txt not found in {INPUT_DIR}")
             print("💡 Please ensure 'dna.txt' is uploaded to the /content directory.")
             return False
 
-        print(f"✅ LOADING: {fasta_file.name}")
+        print(f"✅ LOADING: {fasta_file_path.name}")
 
         # Use try-except for robust loading as a plain sequence if FASTA parsing fails
         try:
-            records = list(SeqIO.parse(fasta_file, "fasta"))
+            records = list(SeqIO.parse(fasta_file_str, "fasta")) # Use string path for SeqIO.parse
             if records:
                 record = records[0]
                 self.sequence = str(record.seq).upper()
-                self.seq_name = fasta_file.stem
+                self.seq_name = fasta_file_path.stem # Use Path object for .stem
                 print(f"📏 SEQUENCE: {self.seq_name} ({len(self.sequence):,} bp)")
                 return True
             else:
                 # Fallback for plain text DNA files
-                with open(fasta_file, 'r') as f:
+                with open(fasta_file_str, 'r') as f: # Use string path for open
                     self.sequence = f.read().strip().upper()
-                self.seq_name = fasta_file.stem
+                self.seq_name = fasta_file_path.stem # Use Path object for .stem
                 print(f"📏 SEQUENCE (Plain Text): {self.seq_name} ({len(self.sequence):,} bp)")
                 return True
         except Exception as e:
@@ -183,11 +178,13 @@ class CompletePrimerPipeline:
                     fwd_tm = self.calculate_tm_basic(fwd)
                     rev_tm = self.calculate_tm_basic(rev)
 
-                    if (constraints['gc'][0] <= fwd_gc <= constraints['gc'][1] and
+                    if (
+                        constraints['gc'][0] <= fwd_gc <= constraints['gc'][1] and
                         constraints['gc'][0] <= rev_gc <= constraints['gc'][1] and
                         constraints['tm'][0] <= fwd_tm <= constraints['tm'][1] and
                         constraints['tm'][0] <= rev_tm <= constraints['tm'][1] and
-                        self.quality_score(fwd) >= 6 and self.quality_score(rev) >= 6):
+                        self.quality_score(fwd) >= 6 and self.quality_score(rev) >= 6
+                    ):
 
                         penalty = self.penalty_score(fwd, rev)
 
