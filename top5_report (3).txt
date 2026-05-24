@@ -1,0 +1,40 @@
+🏆 TOP 5 PRIMER PAIRS
+Target: dna
+Sequence Length: 4,921 bp
+==================================================
+
+1. Penalty: -0.100
+   Forward:  ACGTGGTTATAGGGTTTCGC
+   Reverse:  CTAGGGAAATCAACGCCTAC
+   Tm: 60.0/60.0°C  |  GC: 50.0/50.0%
+   Product: 350 bp
+   Tm Diff: 0°C | Cross 3': 3416.7
+
+2. Penalty: -0.100
+   Forward:  GGGAACTGCCAGTACATATG
+   Reverse:  CAACGAGATCGACCCTAAAG
+   Tm: 60.0/60.0°C  |  GC: 50.0/50.0%
+   Product: 250 bp
+   Tm Diff: 0°C | Cross 3': 59.6
+
+3. Penalty: -0.100
+   Forward:  TCCTGGGATACATGGTGTAC
+   Reverse:  GATACATCACCGTTCAGCAC
+   Tm: 60.0/60.0°C  |  GC: 50.0/50.0%
+   Product: 250 bp
+   Tm Diff: 0°C | Cross 3': 2491.8
+
+4. Penalty: -0.100
+   Forward:  TCCTCATCATCATGGTGAGC
+   Reverse:  GTTCTTGAGCTGCAAACAGG
+   Tm: 60.0/60.0°C  |  GC: 50.0/50.0%
+   Product: 150 bp
+   Tm Diff: 0°C | Cross 3': 2790.9
+
+5. Penalty: -0.050
+   Forward:  GAAGATGGACGCCTTCTACT
+   Reverse:  CAACGAGATCGACCCTAATG
+   Tm: 60.0/60.0°C  |  GC: 50.0/50.0%
+   Product: 400 bp
+   Tm Diff: 0°C | Cross 3': 1556.5
+
